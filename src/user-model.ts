@@ -13,11 +13,12 @@ export class User {
  * @return {User} данные пользователя
  */
 export function getUserData(): User {
-  const user: unknown = JSON.parse(window.localStorage.getItem('user'));
+  const user: unknown = window.localStorage.getItem('user');
   Object.setPrototypeOf(user, User.prototype);
   
-  if (user instanceof User) {
-    return user;
+  //не совсем правильное исправление, но лучше пока придумать не могу
+  if (user !== null && JSON.parse(user as string) instanceof User) {
+    return JSON.parse(user as string);
   } else {
     throw new Error('User in local storage is wrong');
   }
@@ -28,6 +29,6 @@ export function getUserData(): User {
  */
 
 export function getFavoritesAmount(): number{
-  return +window.localStorage.getItem('favoritesAmount');
+  return window.localStorage.getItem('favoritesAmount') ? Number(window.localStorage.getItem('favoritesAmount')): -1;
 }
 
